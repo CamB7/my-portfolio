@@ -1,27 +1,42 @@
+import fs from "fs";
+import path from "path";
 import { ImageResponse } from "next/og";
-import { baseURL, person } from "@/resources";
+import { person } from "@/resources";
 
 export const runtime = "nodejs";
 
-export async function GET(request: Request) {
-  let url = new URL(request.url);
-  let title = url.searchParams.get("title") || "Portfolio";
+let cachedAvatarDataUrl: string | null | undefined;
 
-  async function loadGoogleFont(font: string) {
-    const url = `https://fonts.googleapis.com/css2?family=${font}`;
-    const css = await (await fetch(url)).text();
-    const resource = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/);
-
-    if (resource) {
-      const response = await fetch(resource[1]);
-      if (response.status == 200) {
-        return await response.arrayBuffer();
-      }
-    }
-
-    throw new Error("failed to load font data");
+function getAvatarDataUrl(): string | null {
+  if (cachedAvatarDataUrl !== undefined) {
+    return cachedAvatarDataUrl;
   }
+  try {
+    const rel = person.avatar.replace(/^\//, "");
+    const full = path.join(process.cwd(), "public", rel);
+    if (!fs.existsSync(full)) {
+      cachedAvatarDataUrl = null;
+      return null;
+    }
+    const buf = fs.readFileSync(full);
+    const ext = path.extname(rel).toLowerCase();
+    const mime =
+      ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : "image/jpeg";
+    cachedAvatarDataUrl = `data:${mime};base64,${buf.toString("base64")}`;
+    return cachedAvatarDataUrl;
+  } catch {
+    cachedAvatarDataUrl = null;
+    return null;
+  }
+}
 
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const title = url.searchParams.get("title") || "Portfolio";
+  const avatarSrc = getAvatarDataUrl();
+
+  // No custom fonts: avoids slow network fetches to Google Fonts on every OG request.
+  // Avatar is read from /public once and cached in memory.
   return new ImageResponse(
     <div
       style={{
@@ -30,6 +45,8 @@ export async function GET(request: Request) {
         height: "100%",
         padding: "6rem",
         background: "#151515",
+        fontFamily:
+          "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
       }}
     >
       <div
@@ -62,15 +79,18 @@ export async function GET(request: Request) {
             gap: "5rem",
           }}
         >
-          <img
-            src={baseURL + person.avatar}
-            style={{
-              width: "12rem",
-              height: "12rem",
-              objectFit: "cover",
-              borderRadius: "100%",
-            }}
-          />
+          {avatarSrc ? (
+            <img
+              src={avatarSrc}
+              alt=""
+              style={{
+                width: "12rem",
+                height: "12rem",
+                objectFit: "cover",
+                borderRadius: "100%",
+              }}
+            />
+          ) : null}
           <div
             style={{
               display: "flex",
@@ -106,13 +126,9 @@ export async function GET(request: Request) {
     {
       width: 1280,
       height: 720,
-      fonts: [
-        {
-          name: "Geist",
-          data: await loadGoogleFont("Geist:wght@400"),
-          style: "normal",
-        },
-      ],
+      headers: {
+        "Cache-Control": "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800",
+      },
     },
   );
 }

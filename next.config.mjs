@@ -13,6 +13,9 @@ const withMDX = mdx({
 const nextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   transpilePackages: ["next-mdx-remote"],
+  experimental: {
+    optimizePackageImports: ["@once-ui-system/core", "react-icons"],
+  },
   images: {
     remotePatterns: [
       {

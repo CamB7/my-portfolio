@@ -68,7 +68,22 @@ function getMDXData(dir: string) {
   });
 }
 
+/** In-memory cache for MDX lists (production builds + repeated calls per route). */
+const postsCache = new Map<string, ReturnType<typeof getMDXData>>();
+
 export function getPosts(customPath = ["", "", "", ""]) {
   const postsDir = path.join(process.cwd(), ...customPath);
-  return getMDXData(postsDir);
+  const cacheKey = postsDir;
+
+  if (process.env.NODE_ENV === "production" && postsCache.has(cacheKey)) {
+    return postsCache.get(cacheKey)!;
+  }
+
+  const data = getMDXData(postsDir);
+
+  if (process.env.NODE_ENV === "production") {
+    postsCache.set(cacheKey, data);
+  }
+
+  return data;
 }
