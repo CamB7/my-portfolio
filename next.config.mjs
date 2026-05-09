@@ -1,4 +1,8 @@
 import mdx from "@next/mdx";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -21,6 +25,10 @@ const nextConfig = {
   sassOptions: {
     compiler: "modern",
     silenceDeprecations: ["legacy-js-api"],
+  },
+  // Pin Turbopack root so `node_modules` resolves inside this app (avoids wrong root when other lockfiles exist).
+  turbopack: {
+    root: __dirname,
   },
 };
 
