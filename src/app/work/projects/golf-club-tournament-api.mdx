@@ -1,0 +1,28 @@
+---
+title: "Golf Club Tournament API"
+publishedAt: "2026-03-01"
+summary: "Java REST API for golf club members, tournaments, and participant registration—runs with Docker Compose alongside MySQL."
+images:
+  - "/images/projects/project-01/cover-01.jpg"
+link: "https://github.com/CamB7/GolfClubTournament-API"
+team: []
+---
+
+## Overview
+
+REST API for managing golf club members, tournaments, and who is registered for each tournament. The service exposes filtering and lookup endpoints (by name, membership type, phone, dates, and location) and supports adding or removing participants from a tournament.
+
+## Highlights
+
+- **Members**: CRUD-style access with query filters—for example partial name search, membership type, phone number, and date ranges.
+- **Tournaments**: List and filter tournaments by start date and location; inspect tournaments tied to a member.
+- **Participants**: Join or leave tournaments via HTTP POST/DELETE, with endpoints to list participants for a tournament.
+- **Docker workflow**: Local stack with Docker Compose builds the app image and runs MySQL alongside the API (defaults to port **8080**).
+
+## Stack
+
+Java backend, MySQL, Docker Compose.
+
+## Repository
+
+Source and setup instructions: [github.com/CamB7/GolfClubTournament-API](https://github.com/CamB7/GolfClubTournament-API).

@@ -1,0 +1,27 @@
+---
+title: "S4 Sprint API — Aviation REST backend"
+publishedAt: "2026-02-15"
+summary: "Spring Boot REST API for cities, airports, aircraft, passengers, and flights—JSON entities, CRUD routes, and helper endpoints for an aviation domain."
+images:
+  - "/images/projects/project-01/cover-02.jpg"
+link: "https://github.com/CamB7/S4-Sprint-API"
+team: []
+---
+
+## Overview
+
+A compact Spring Boot REST API modeling an aviation domain: **cities**, **airports**, **aircraft**, **passengers**, and **flights**. Entities are returned as JSON with straightforward CRUD operations plus targeted helper endpoints (including aircraft/airport relationships and flight-related lookups).
+
+## Highlights
+
+- **Domain-focused routes**: Separate resource groups for cities, airports, aircraft, passengers, and flights with GET/POST/PUT/DELETE patterns where applicable.
+- **Query helpers**: Endpoints such as airports by code or city, aircraft linked to airports (takeoff/landing/combined), and flight-related reads tailored for downstream clients.
+- **Local development**: Java 17+, Maven; MySQL or H2 for tests; configuration via `application.properties`.
+
+## Stack
+
+Java 17, Spring Boot, Maven, MySQL / H2.
+
+## Repository
+
+Source and run instructions: [github.com/CamB7/S4-Sprint-API](https://github.com/CamB7/S4-Sprint-API).
