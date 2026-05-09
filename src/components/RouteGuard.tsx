@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { routes, protectedRoutes } from "@/resources";
 import { Flex, Spinner, Button, Heading, Column, PasswordInput } from "@once-ui-system/core";
@@ -10,56 +10,67 @@ interface RouteGuardProps {
   children: React.ReactNode;
 }
 
+function isRouteEnabled(pathname: string | null): boolean {
+  if (!pathname) return false;
+
+  if (pathname in routes && routes[pathname as keyof typeof routes]) {
+    return true;
+  }
+
+  const dynamicRoutes = ["/blog", "/work"] as const;
+  for (const route of dynamicRoutes) {
+    if (pathname.startsWith(route) && routes[route]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const pathname = usePathname();
-  const [isRouteEnabled, setIsRouteEnabled] = useState(false);
-  const [isPasswordRequired, setIsPasswordRequired] = useState(false);
+
+  const routeEnabled = useMemo(() => isRouteEnabled(pathname), [pathname]);
+
+  const passwordRequired = useMemo(() => {
+    if (!pathname) return false;
+    return Boolean(protectedRoutes[pathname as keyof typeof protectedRoutes]);
+  }, [pathname]);
+
+  const [checkingPassword, setCheckingPassword] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const performChecks = async () => {
-      setLoading(true);
-      setIsRouteEnabled(false);
-      setIsPasswordRequired(false);
-      setIsAuthenticated(false);
+    if (!passwordRequired) {
+      setCheckingPassword(false);
+      setAuthenticated(false);
+      setPassword("");
+      setError(undefined);
+      return;
+    }
 
-      const checkRouteEnabled = () => {
-        if (!pathname) return false;
+    let cancelled = false;
+    setCheckingPassword(true);
 
-        if (pathname in routes) {
-          return routes[pathname as keyof typeof routes];
-        }
-
-        const dynamicRoutes = ["/blog", "/work"] as const;
-        for (const route of dynamicRoutes) {
-          if (pathname?.startsWith(route) && routes[route]) {
-            return true;
-          }
-        }
-
-        return false;
-      };
-
-      const routeEnabled = checkRouteEnabled();
-      setIsRouteEnabled(routeEnabled);
-
-      if (protectedRoutes[pathname as keyof typeof protectedRoutes]) {
-        setIsPasswordRequired(true);
-
+    (async () => {
+      try {
         const response = await fetch("/api/check-auth");
-        if (response.ok) {
-          setIsAuthenticated(true);
+        if (!cancelled) {
+          setAuthenticated(response.ok);
+        }
+      } finally {
+        if (!cancelled) {
+          setCheckingPassword(false);
         }
       }
+    })();
 
-      setLoading(false);
+    return () => {
+      cancelled = true;
     };
-
-    performChecks();
-  }, [pathname]);
+  }, [pathname, passwordRequired]);
 
   const handlePasswordSubmit = async () => {
     const response = await fetch("/api/authenticate", {
@@ -69,14 +80,18 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
     });
 
     if (response.ok) {
-      setIsAuthenticated(true);
+      setAuthenticated(true);
       setError(undefined);
     } else {
       setError("Incorrect password");
     }
   };
 
-  if (loading) {
+  if (!routeEnabled) {
+    return <NotFound />;
+  }
+
+  if (passwordRequired && checkingPassword) {
     return (
       <Flex fillWidth paddingY="128" horizontal="center">
         <Spinner />
@@ -84,11 +99,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
     );
   }
 
-  if (!isRouteEnabled) {
-    return <NotFound />;
-  }
-
-  if (isPasswordRequired && !isAuthenticated) {
+  if (passwordRequired && !authenticated) {
     return (
       <Column paddingY="128" maxWidth={24} gap="24" center>
         <Heading align="center" wrap="balance">

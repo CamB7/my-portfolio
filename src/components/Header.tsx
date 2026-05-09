@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
@@ -44,6 +44,16 @@ export default TimeDisplay;
 
 export const Header = () => {
   const pathname = usePathname() ?? "";
+  const router = useRouter();
+
+  useEffect(() => {
+    const paths = ["/", "/about", "/work", "/blog", "/gallery"] as const;
+    for (const path of paths) {
+      if (routes[path as keyof typeof routes]) {
+        router.prefetch(path);
+      }
+    }
+  }, [router]);
 
   return (
     <>

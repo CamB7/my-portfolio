@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { cache } from "react";
 
 type Team = {
   name: string;
@@ -68,22 +69,10 @@ function getMDXData(dir: string) {
   });
 }
 
-/** In-memory cache for MDX lists (production builds + repeated calls per route). */
-const postsCache = new Map<string, ReturnType<typeof getMDXData>>();
+/** Dedupe MDX reads within the same request (multiple `getPosts` calls per page). */
+const loadPostsForDir = cache((absoluteDir: string) => getMDXData(absoluteDir));
 
 export function getPosts(customPath = ["", "", "", ""]) {
   const postsDir = path.join(process.cwd(), ...customPath);
-  const cacheKey = postsDir;
-
-  if (process.env.NODE_ENV === "production" && postsCache.has(cacheKey)) {
-    return postsCache.get(cacheKey)!;
-  }
-
-  const data = getMDXData(postsDir);
-
-  if (process.env.NODE_ENV === "production") {
-    postsCache.set(cacheKey, data);
-  }
-
-  return data;
+  return loadPostsForDir(postsDir);
 }
