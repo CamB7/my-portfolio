@@ -13,6 +13,9 @@ import {
 } from "@once-ui-system/core";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
+/** Core Schemes plus `custom` (CSS tokens in src/resources/custom.css). */
+export type AccentScheme = Schemes | "custom";
+
 /**
  * Display configuration for UI elements.
  */
@@ -49,7 +52,7 @@ export type StyleConfig = {
   theme: Theme;
   neutral: NeutralColor;
   brand: Schemes;
-  accent: Schemes;
+  accent: AccentScheme;
   solid: SolidType;
   solidStyle: SolidStyle;
   border: BorderStyle;
