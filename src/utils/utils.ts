@@ -10,6 +10,11 @@ type Team = {
   linkedIn: string;
 };
 
+type Collaborator = {
+  name: string;
+  url: string;
+};
+
 type Metadata = {
   title: string;
   subtitle?: string;
@@ -20,6 +25,10 @@ type Metadata = {
   tag?: string;
   team: Team[];
   link?: string;
+  /** Optional companion backend repo. When set, the primary `link` is labeled “Frontend”. */
+  backendLink?: string;
+  /** Shown on project cards as a link below “View project” (e.g. teammate GitHub). */
+  collaborator?: Collaborator;
 };
 
 import { notFound } from "next/navigation";
@@ -50,6 +59,11 @@ function readMDXFile(filePath: string) {
     tag: data.tag || [],
     team: data.team || [],
     link: data.link || "",
+    backendLink: data.backendLink || undefined,
+    collaborator:
+      data.collaborator?.name && data.collaborator?.url
+        ? { name: data.collaborator.name, url: data.collaborator.url }
+        : undefined,
   };
 
   return { metadata, content };

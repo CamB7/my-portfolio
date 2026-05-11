@@ -1,4 +1,4 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
+import { About, Home, Newsletter, Person, Social, Work } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
@@ -9,6 +9,7 @@ const person: Person = {
   avatar: "/images/Headshot.png",
   email: "",
   location: "America/St_Johns",
+  locationLabel: "St. John's, Newfoundland",
   languages: ["English"],
 };
 
@@ -41,7 +42,7 @@ const home: Home = {
   description: `Portfolio and projects by ${person.name}, full stack developer.`,
   headline: (
     <>
-      Recent graduate from Keyin College&apos;s full stack software development program
+      Full stack developer, building weekly.
     </>
   ),
   featured: {
@@ -59,8 +60,9 @@ const home: Home = {
   },
   subline: (
     <>
-      I am currently refining my skills in full stack applications and have started learning AI
-      workflows to increase productivity. I am currently building real applications weekly!
+      Recent Keyin College graduate based in St. John&apos;s, Newfoundland. I ship a new full
+      stack project every week and lean on AI-assisted workflows to build faster and learn
+      sharper.
     </>
   ),
 };
@@ -86,8 +88,10 @@ const about: About = {
     title: "Introduction",
     description: (
       <>
-        I am currently refining my skills in full stack applications and have started learning AI
-        workflows to increase productivity. I am currently building real applications weekly!
+        I&apos;m a full stack developer based in St. John&apos;s, Newfoundland — a recent
+        Keyin College graduate shipping a new project every week. Lately I&apos;ve been
+        leaning into AI-assisted workflows to learn faster, design with intention, and ship
+        with confidence.
       </>
     ),
   },
@@ -108,14 +112,6 @@ const about: About = {
             Applying modern front-end patterns with React and integrating with back-end and database
             layers.
           </>,
-        ],
-        images: [
-          {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Project placeholder",
-            width: 16,
-            height: 9,
-          },
         ],
       },
     ],
@@ -142,14 +138,6 @@ const about: About = {
           <>Building interactive UIs and client-side experiences with React.</>
         ),
         tags: [{ name: "React", icon: "react" }],
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Placeholder project image",
-            width: 16,
-            height: 9,
-          },
-        ],
       },
       {
         title: "Java",
@@ -157,14 +145,6 @@ const about: About = {
           <>Server-side logic, APIs, and application structure with Java.</>
         ),
         tags: [{ name: "Java", icon: "java" }],
-        images: [
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Placeholder project image",
-            width: 16,
-            height: 9,
-          },
-        ],
       },
       {
         title: "MySQL & PostgreSQL",
@@ -175,24 +155,9 @@ const about: About = {
           { name: "MySQL", icon: "mysql" },
           { name: "PostgreSQL", icon: "postgresql" },
         ],
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Placeholder project image",
-            width: 16,
-            height: 9,
-          },
-        ],
       },
     ],
   },
-};
-
-const blog: Blog = {
-  path: "/blog",
-  label: "Blog",
-  title: "Writing",
-  description: `Notes and posts by ${person.name}`,
 };
 
 const work: Work = {
@@ -202,53 +167,4 @@ const work: Work = {
   description: `Projects and work samples by ${person.name}`,
 };
 
-const gallery: Gallery = {
-  path: "/gallery",
-  label: "Gallery",
-  title: `Gallery – ${person.name}`,
-  description: `Placeholder images from the template — replace with your own photos when ready.`,
-  images: [
-    {
-      src: "/images/gallery/horizontal-1.jpg",
-      alt: "Gallery placeholder",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-4.jpg",
-      alt: "Gallery placeholder",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-3.jpg",
-      alt: "Gallery placeholder",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-1.jpg",
-      alt: "Gallery placeholder",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/vertical-2.jpg",
-      alt: "Gallery placeholder",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-2.jpg",
-      alt: "Gallery placeholder",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-4.jpg",
-      alt: "Gallery placeholder",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-3.jpg",
-      alt: "Gallery placeholder",
-      orientation: "vertical",
-    },
-  ],
-};
-
-export { person, social, newsletter, home, about, blog, work, gallery };
+export { person, social, newsletter, home, about, work };

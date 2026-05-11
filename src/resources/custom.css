@@ -17,3 +17,11 @@
   --scheme-accent-600-30: rgba(47, 92, 181, 0.3);
   --scheme-accent-600-50: rgba(47, 92, 181, 0.5);
 }
+
+/* Headshot framing: nudge the image down inside the circular Avatar so the
+   face sits better-centered. Lower Y values show more of the top of the
+   source photo, which visually shifts the subject DOWN inside the frame. */
+img[src*="Headshot"] {
+  object-position: 50% 0%;
+}
+

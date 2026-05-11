@@ -1,0 +1,41 @@
+---
+title: "SkyBeacon — React Flight Dashboard"
+publishedAt: "2026-04-20"
+summary: "Team-built React 19 + Vite flight dashboard (with Kassaundra Fequet): public arrivals/departures board and a secure admin panel for CRUD over flights, gates, and aircraft."
+image: "/images/projects/Skybeacon.png"
+images:
+  - "/images/projects/Skybeacon.png"
+link: "https://github.com/CamB7/S4-Final-Sprint-Frontend"
+backendLink: "https://github.com/CamB7/SDAT-Final-Sprint-API"
+team: []
+collaborator:
+  name: "Kassaundra Fequet"
+  url: "https://github.com/KassFequet"
+---
+
+## Overview
+
+**SkyBeacon** is a flight-tracking web app built as a **team project** with [Kassaundra Fequet](https://github.com/KassFequet). We used React 19 and Vite for a public-facing dashboard — real-time arrivals and departures, gate info, and scheduled-vs-actual times — plus a secure admin panel for managing flight data. The UI uses a custom glassmorphism design with a lightweight WebGL animated background.
+
+## Highlights
+
+- **Public flight board**: Live arrival/departure views with filtering by direction and by airport, plus scheduled vs. actual times and gate assignments.
+- **Admin authentication**: Login flow that gates the admin dashboard behind verified credentials, with session protection for write actions.
+- **Admin CRUD**: Authorized users can add, edit, and delete flights — assigning valid aircraft, airports, and gates through dropdowns — and update statuses like `BOARDING`, `DELAYED`, and `CANCELLED`.
+- **Polished UI**: Custom vanilla CSS with a responsive glassmorphism theme, paired with an OGL-based WebGL background animation.
+- **Tests**: Component and behavior tests with **Vitest** and React Testing Library.
+
+## Stack
+
+React 19, Vite, React Router v7, vanilla CSS (glassmorphism), OGL (WebGL), Vitest + React Testing Library.
+
+## Backend
+
+SkyBeacon talks to a companion Spring Boot REST API — flights, gates, airports, aircraft, plus an `/auth` group for admin login. Connection target defaults to `http://localhost:8080`. Source: [github.com/CamB7/SDAT-Final-Sprint-API](https://github.com/CamB7/SDAT-Final-Sprint-API).
+
+## Repositories
+
+- Frontend: [github.com/CamB7/S4-Final-Sprint-Frontend](https://github.com/CamB7/S4-Final-Sprint-Frontend)
+- Backend: [github.com/CamB7/SDAT-Final-Sprint-API](https://github.com/CamB7/SDAT-Final-Sprint-API)
+
+Teammate: [Kassaundra Fequet on GitHub](https://github.com/KassFequet).

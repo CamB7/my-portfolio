@@ -17,7 +17,7 @@ function isRouteEnabled(pathname: string | null): boolean {
     return true;
   }
 
-  const dynamicRoutes = ["/blog", "/work"] as const;
+  const dynamicRoutes = ["/work"] as const;
   for (const route of dynamicRoutes) {
     if (pathname.startsWith(route) && routes[route]) {
       return true;
