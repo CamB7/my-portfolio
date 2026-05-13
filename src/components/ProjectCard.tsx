@@ -7,6 +7,7 @@ import {
   SmartLink,
   Text,
 } from "@once-ui-system/core";
+import styles from "./ProjectCard.module.scss";
 
 interface ProjectCardProps {
   href: string;
@@ -19,6 +20,8 @@ interface ProjectCardProps {
   link: string;
   backendLink?: string;
   collaborator?: { name: string; url: string };
+  /** Used to stagger fade-in delays when multiple cards mount together. */
+  animationIndex?: number;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -31,87 +34,102 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   link,
   backendLink,
   collaborator,
+  animationIndex = 0,
 }) => {
   const primaryLinkLabel = backendLink ? "Frontend" : "View project";
+  const hasLinks =
+    Boolean(content?.trim()) ||
+    Boolean(link) ||
+    Boolean(backendLink) ||
+    Boolean(collaborator?.url);
+
   return (
-    <Column fillWidth gap="m">
-      {images.length > 0 && (
-        <Carousel
-          sizes="(max-width: 960px) 100vw, 960px"
-          items={images.map((image) => ({
-            slide: image,
-            alt: title,
-          }))}
-        />
+    <Column
+      className={styles.root}
+      style={{ animationDelay: `${animationIndex * 75}ms` }}
+      fillWidth
+      gap="l"
+      paddingX="s"
+      paddingTop="12"
+      paddingBottom="24"
+      minWidth="0"
+      horizontal="center"
+    >
+      {title && (
+        <Heading as="h2" wrap="balance" variant="heading-strong-xl" align="center">
+          {title}
+        </Heading>
       )}
-      <Flex
-        s={{ direction: "column" }}
-        fillWidth
-        paddingX="s"
-        paddingTop="12"
-        paddingBottom="24"
-        gap="l"
-      >
-        {title && (
-          <Flex flex={5}>
-            <Heading as="h2" wrap="balance" variant="heading-strong-xl">
-              {title}
-            </Heading>
-          </Flex>
-        )}
-        {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-          <Column flex={7} gap="16">
-            {avatars?.length > 0 && <AvatarGroup avatars={avatars} size="m" reverse />}
-            {description?.trim() && (
-              <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
-                {description}
-              </Text>
+      {description?.trim() && (
+        <Text
+          wrap="balance"
+          variant="body-default-s"
+          onBackground="neutral-weak"
+          align="center"
+        >
+          {description}
+        </Text>
+      )}
+      {images.length > 0 && (
+        <Column fillWidth maxWidth={30} horizontal="center">
+          <Carousel
+            sizes="(max-width: 960px) 60vw, 560px"
+            items={images.map((image) => ({
+              slide: image,
+              alt: title,
+            }))}
+          />
+        </Column>
+      )}
+      {avatars?.length > 0 && (
+        <Flex fillWidth horizontal="center">
+          <AvatarGroup avatars={avatars} size="m" reverse />
+        </Flex>
+      )}
+      {hasLinks && (
+        <Column gap="8" fillWidth horizontal="center">
+          <Flex gap="24" wrap horizontal="center">
+            {content?.trim() && (
+              <SmartLink
+                suffixIcon="arrowRight"
+                style={{ margin: "0", width: "fit-content" }}
+                href={href}
+              >
+                <Text variant="body-default-s">Read case study</Text>
+              </SmartLink>
             )}
-            <Column gap="8">
-              <Flex gap="24" wrap>
-                {content?.trim() && (
-                  <SmartLink
-                    suffixIcon="arrowRight"
-                    style={{ margin: "0", width: "fit-content" }}
-                    href={href}
-                  >
-                    <Text variant="body-default-s">Read case study</Text>
-                  </SmartLink>
-                )}
-                {link && (
-                  <SmartLink
-                    suffixIcon="arrowUpRightFromSquare"
-                    style={{ margin: "0", width: "fit-content" }}
-                    href={link}
-                  >
-                    <Text variant="body-default-s">{primaryLinkLabel}</Text>
-                  </SmartLink>
-                )}
-                {backendLink && (
-                  <SmartLink
-                    suffixIcon="arrowUpRightFromSquare"
-                    style={{ margin: "0", width: "fit-content" }}
-                    href={backendLink}
-                  >
-                    <Text variant="body-default-s">Backend</Text>
-                  </SmartLink>
-                )}
-              </Flex>
-              {collaborator?.url && (
-                <SmartLink
-                  suffixIcon="arrowUpRightFromSquare"
-                  style={{ margin: "0", width: "fit-content" }}
-                  href={collaborator.url}
-                >
-                  <Text variant="body-default-s">
-                    Co-contributor: {collaborator.name}
-                  </Text>
-                </SmartLink>
-              )}
-            </Column>
-          </Column>
-        )}
-      </Flex>
+            {link && (
+              <SmartLink
+                suffixIcon="arrowUpRightFromSquare"
+                style={{ margin: "0", width: "fit-content" }}
+                href={link}
+              >
+                <Text variant="body-default-s">{primaryLinkLabel}</Text>
+              </SmartLink>
+            )}
+            {backendLink && (
+              <SmartLink
+                suffixIcon="arrowUpRightFromSquare"
+                style={{ margin: "0", width: "fit-content" }}
+                href={backendLink}
+              >
+                <Text variant="body-default-s">Backend</Text>
+              </SmartLink>
+            )}
+          </Flex>
+          {collaborator?.url && (
+            <Flex fillWidth horizontal="center">
+              <SmartLink
+                suffixIcon="arrowUpRightFromSquare"
+                style={{ margin: "0", width: "fit-content" }}
+                href={collaborator.url}
+              >
+                <Text variant="body-default-s">Co-contributor: {collaborator.name}</Text>
+              </SmartLink>
+            </Flex>
+          )}
+        </Column>
+      )}
     </Column>
   );
 };

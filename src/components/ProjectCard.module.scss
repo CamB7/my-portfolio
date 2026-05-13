@@ -1,0 +1,16 @@
+.root {
+  opacity: 0;
+  animation: projectCardFade 0.55s ease-out forwards;
+}
+
+@keyframes projectCardFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

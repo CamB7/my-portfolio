@@ -38,6 +38,7 @@ export function Projects({ range, exclude }: ProjectsProps) {
           link={post.metadata.link || ""}
           backendLink={post.metadata.backendLink}
           collaborator={post.metadata.collaborator}
+          animationIndex={index}
         />
       ))}
     </Column>
