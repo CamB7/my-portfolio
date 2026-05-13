@@ -62,7 +62,13 @@ export default function Home() {
               </Badge>
             </Row>
           )}
-          <Heading wrap="balance" variant="display-strong-l" marginBottom="16">
+          <Heading
+            wrap="balance"
+            variant="display-strong-xl"
+            marginBottom="16"
+            align="center"
+            style={{ letterSpacing: "0.03em" }}
+          >
             {home.headline}
           </Heading>
           <Text
