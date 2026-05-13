@@ -51,7 +51,7 @@ export type FontsConfig = {
 export type StyleConfig = {
   theme: Theme;
   neutral: NeutralColor;
-  brand: Schemes;
+  brand: AccentScheme;
   accent: AccentScheme;
   solid: SolidType;
   solidStyle: SolidStyle;

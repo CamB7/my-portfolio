@@ -1,21 +1,46 @@
-/* Custom accent palette for data-accent="custom" (see once-ui.config.ts).
-   Primary accent: #2f5cb5 — generated scale for light/dark UI usage. */
+/* Custom brand + accent palettes (data-brand / data-accent = "custom" — see once-ui.config.ts).
+   Warm orange scale for links, accents, and brand-tinted UI (dots, badges). */
 :root {
-  --scheme-accent-100: #0a1224;
-  --scheme-accent-200: #121f3d;
-  --scheme-accent-300: #1a2f5c;
-  --scheme-accent-400: #244076;
-  --scheme-accent-500: #2a4f9e;
-  --scheme-accent-600: #2f5cb5;
-  --scheme-accent-700: #5579c4;
-  --scheme-accent-800: #7a97d3;
-  --scheme-accent-900: #9db4e0;
-  --scheme-accent-1000: #c5d4ef;
-  --scheme-accent-1100: #dce6f7;
-  --scheme-accent-1200: #eef3fc;
-  --scheme-accent-600-15: rgba(47, 92, 181, 0.15);
-  --scheme-accent-600-30: rgba(47, 92, 181, 0.3);
-  --scheme-accent-600-50: rgba(47, 92, 181, 0.5);
+  --scheme-brand-100: #1a0f06;
+  --scheme-brand-200: #2d1a0c;
+  --scheme-brand-300: #4a2a12;
+  --scheme-brand-400: #6b3d1a;
+  --scheme-brand-500: #8f5224;
+  --scheme-brand-600: #d9772e;
+  --scheme-brand-700: #e8954a;
+  --scheme-brand-800: #f0b070;
+  --scheme-brand-900: #f5c896;
+  --scheme-brand-1000: #f9dcc0;
+  --scheme-brand-1100: #fce9d6;
+  --scheme-brand-1200: #fef5eb;
+  --scheme-brand-600-15: rgba(217, 119, 46, 0.15);
+  --scheme-brand-600-30: rgba(217, 119, 46, 0.3);
+  --scheme-brand-600-50: rgba(217, 119, 46, 0.5);
+
+  --scheme-accent-100: #1a0f06;
+  --scheme-accent-200: #2d1a0c;
+  --scheme-accent-300: #4a2a12;
+  --scheme-accent-400: #6b3d1a;
+  --scheme-accent-500: #8f5224;
+  --scheme-accent-600: #d9772e;
+  --scheme-accent-700: #e8954a;
+  --scheme-accent-800: #f0b070;
+  --scheme-accent-900: #f5c896;
+  --scheme-accent-1000: #f9dcc0;
+  --scheme-accent-1100: #fce9d6;
+  --scheme-accent-1200: #fef5eb;
+  --scheme-accent-600-15: rgba(217, 119, 46, 0.15);
+  --scheme-accent-600-30: rgba(217, 119, 46, 0.3);
+  --scheme-accent-600-50: rgba(217, 119, 46, 0.5);
+}
+
+/* Slight warm orange cast on page canvas (Once UI uses --page-background). */
+[data-theme="dark"] {
+  --page-background: color-mix(in srgb, var(--function-neutral-100) 94%, var(--function-brand-600) 6%);
+}
+
+[data-theme="light"] {
+  --page-background: color-mix(in srgb, var(--static-white) 94%, var(--function-brand-600) 6%);
 }
 
 /* Headshot framing: nudge the image down inside the circular Avatar so the
@@ -24,4 +49,3 @@
 img[src*="Headshot"] {
   object-position: 50% 0%;
 }
-

@@ -24,7 +24,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <LayoutProvider>
       <ThemeProvider
-        brand={style.brand as Schemes}
+        brand={style.brand as Schemes | "custom"}
         accent={style.accent as Schemes | "custom"}
         neutral={style.neutral as NeutralColor}
         solid={style.solid as SolidType}

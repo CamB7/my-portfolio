@@ -85,9 +85,16 @@ export default async function RootLayout({
                   const resolvedTheme = resolveTheme(savedTheme);
                   root.setAttribute('data-theme', resolvedTheme);
                   
-                  // Apply any saved style overrides
+                  // Apply any saved style overrides.
+                  // Skip brand/accent so the config palette in custom.css always wins
+                  // (and purge any stale cached values from older sessions).
+                  const lockedKeys = new Set(['brand', 'accent']);
                   const styleKeys = Object.keys(config);
                   styleKeys.forEach(key => {
+                    if (lockedKeys.has(key)) {
+                      localStorage.removeItem('data-' + key);
+                      return;
+                    }
                     const value = localStorage.getItem('data-' + key);
                     if (value) {
                       root.setAttribute('data-' + key, value);

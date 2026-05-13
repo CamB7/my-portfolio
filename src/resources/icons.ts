@@ -30,6 +30,7 @@ import {
   SiOpenjdk,
   SiMysql,
   SiPostgresql,
+  SiDocker,
 } from "react-icons/si";
 
 import { FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaInstagram, FaXTwitter, FaFacebook, FaPinterest, FaWhatsapp, FaReddit, FaTelegram, } from "react-icons/fa6";
@@ -64,6 +65,7 @@ export const iconLibrary: Record<string, IconType> = {
   java: SiOpenjdk,
   mysql: SiMysql,
   postgresql: SiPostgresql,
+  docker: SiDocker,
   facebook: FaFacebook,
   pinterest: FaPinterest,
   whatsapp: FaWhatsapp,

@@ -71,8 +71,8 @@ const fonts: FontsConfig = {
 const style: StyleConfig = {
   theme: "system", // dark | light | system
   neutral: "gray", // sand | gray | slate | mint | rose | dusk | custom
-  brand: "blue", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
-  accent: "custom", // Custom accent tokens defined in src/resources/custom.css (#2f5cb5 scale)
+  brand: "custom", // Custom soft-red brand tokens defined in src/resources/custom.css
+  accent: "custom", // Custom soft-red accent tokens defined in src/resources/custom.css
   solid: "contrast", // color | contrast
   solidStyle: "flat", // flat | plastic
   border: "playful", // rounded | playful | conservative | sharp
