@@ -5,6 +5,9 @@ import { person } from "@/resources";
 
 export const runtime = "nodejs";
 
+/** Matches `--scheme-brand-600` in `src/resources/custom.css`. */
+const ACCENT = "#d9772e";
+
 let cachedAvatarDataUrl: string | null | undefined;
 
 function getAvatarDataUrl(): string | null {
@@ -43,12 +46,25 @@ export async function GET(request: Request) {
         display: "flex",
         width: "100%",
         height: "100%",
+        position: "relative",
         padding: "6rem",
-        background: "#151515",
+        paddingTop: "7.5rem",
+        background:
+          "linear-gradient(148deg, #181512 0%, #0f0e0c 48%, #1a1510 100%)",
         fontFamily:
           "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "10px",
+          background: ACCENT,
+        }}
+      />
       <div
         style={{
           display: "flex",
@@ -59,19 +75,31 @@ export async function GET(request: Request) {
           color: "white",
         }}
       >
-        <span
-          style={{
-            padding: "1rem",
-            fontSize: "6rem",
-            lineHeight: "8rem",
-            letterSpacing: "-0.05em",
-            whiteSpace: "wrap",
-            textWrap: "balance",
-            overflow: "hidden",
-          }}
-        >
-          {title}
-        </span>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          <span
+            style={{
+              padding: "1rem",
+              paddingLeft: 0,
+              fontSize: "6rem",
+              lineHeight: "7rem",
+              letterSpacing: "-0.03em",
+              whiteSpace: "wrap",
+              textWrap: "balance",
+              overflow: "hidden",
+            }}
+          >
+            {title}
+          </span>
+          <div
+            style={{
+              width: "10rem",
+              height: "6px",
+              borderRadius: "3px",
+              background: ACCENT,
+              opacity: 0.95,
+            }}
+          />
+        </div>
         <div
           style={{
             display: "flex",
@@ -88,6 +116,7 @@ export async function GET(request: Request) {
                 height: "12rem",
                 objectFit: "cover",
                 borderRadius: "100%",
+                border: `5px solid ${ACCENT}`,
               }}
             />
           ) : null}
@@ -114,7 +143,7 @@ export async function GET(request: Request) {
                 lineHeight: "2.5rem",
                 whiteSpace: "pre-wrap",
                 textWrap: "balance",
-                opacity: "0.6",
+                opacity: "0.62",
               }}
             >
               {person.role}

@@ -36,7 +36,7 @@ const social: Social = [
 
 const home: Home = {
   path: "/",
-  image: "/images/og/home.jpg",
+  image: `/api/og/generate?title=${encodeURIComponent(`${person.name} — Portfolio`)}`,
   label: "Home",
   title: `${person.name} — Portfolio`,
   description: `Portfolio and projects by ${person.name}, full stack developer.`,
@@ -142,7 +142,9 @@ const about: About = {
       {
         title: "Java",
         description: (
-          <>Server-side logic, APIs, and application structure with Java.</>
+          <>
+            Server-side logic, REST APIs, and application structure with Java and Spring Boot.
+          </>
         ),
         tags: [{ name: "Java", icon: "java" }],
       },
@@ -155,6 +157,13 @@ const about: About = {
           { name: "MySQL", icon: "mysql" },
           { name: "PostgreSQL", icon: "postgresql" },
         ],
+      },
+      {
+        title: "Docker",
+        description: (
+          <>Containerized apps and local stacks with Docker and Compose for repeatable dev and deploy.</>
+        ),
+        tags: [{ name: "Docker", icon: "docker" }],
       },
     ],
   },
