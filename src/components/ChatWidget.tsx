@@ -9,13 +9,12 @@ import {
   type KeyboardEvent,
 } from "react";
 import { HiOutlineChatBubbleLeftRight, HiXMark } from "react-icons/hi2";
+import {
+  loadChatSession,
+  saveChatSession,
+  type ChatMessage,
+} from "@/lib/chat-session";
 import styles from "./ChatWidget.module.scss";
-
-export type ChatMessage = {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-};
 
 function createMessageId(): string {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
@@ -38,10 +37,21 @@ export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [sessionReady, setSessionReady] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    setMessages(loadChatSession());
+    setSessionReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!sessionReady) return;
+    saveChatSession(messages);
+  }, [messages, sessionReady]);
 
   useEffect(() => {
     if (open) {
