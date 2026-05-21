@@ -12,7 +12,7 @@ import {
   opacity,
   SpacingToken,
 } from "@once-ui-system/core";
-import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { ChatWidget, Footer, Header, RouteGuard, Providers } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
 export async function generateMetadata() {
@@ -169,6 +169,7 @@ export default async function RootLayout({
             </Flex>
           </Flex>
           <Footer />
+          <ChatWidget />
         </Column>
       </Providers>
     </Flex>
