@@ -1,0 +1,124 @@
+.guestbook {
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--static-space-12);
+  margin-bottom: var(--static-space-24);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  resize: vertical;
+  padding: var(--static-space-12) var(--static-space-16);
+  border-radius: var(--radius-m);
+  border: 1px solid var(--neutral-border-medium);
+  background: var(--page-background);
+  color: var(--neutral-on-background-strong);
+  font: inherit;
+  line-height: 1.5;
+  transition: border-color var(--transition-micro-medium);
+
+  &:focus {
+    outline: none;
+    border-color: var(--brand-border-strong);
+    box-shadow: 0 0 0 1px var(--brand-alpha-weak);
+  }
+
+  &::placeholder {
+    color: var(--neutral-on-background-weak);
+  }
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--static-space-12);
+  flex-wrap: wrap;
+}
+
+.counter {
+  font-size: var(--static-font-size-12);
+  color: var(--neutral-on-background-weak);
+}
+
+.postingAs {
+  font-size: var(--static-font-size-12);
+  color: var(--neutral-on-background-weak);
+}
+
+.error {
+  margin: 0;
+  font-size: var(--static-font-size-14);
+  color: var(--danger-on-background-strong);
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--static-space-16);
+}
+
+.message {
+  display: flex;
+  gap: var(--static-space-12);
+  padding: var(--static-space-16);
+  border-radius: var(--radius-m);
+  border: 1px solid var(--neutral-border-weak);
+  background: color-mix(in srgb, var(--page-background) 92%, var(--neutral-background-weak) 8%);
+}
+
+.messageOwn {
+  border-color: var(--brand-border-medium);
+  background: color-mix(in srgb, var(--page-background) 88%, var(--brand-alpha-weak) 12%);
+  box-shadow: inset 3px 0 0 var(--brand-background-strong);
+}
+
+.messageBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--static-space-4);
+  min-width: 0;
+  flex: 1;
+}
+
+.messageHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--static-space-8);
+  flex-wrap: wrap;
+}
+
+.messageName {
+  font-weight: 600;
+  color: var(--neutral-on-background-strong);
+}
+
+.messageTime {
+  font-size: var(--static-font-size-12);
+  color: var(--neutral-on-background-weak);
+  white-space: nowrap;
+}
+
+.messageText {
+  margin: 0;
+  color: var(--neutral-on-background-medium);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.empty {
+  margin: 0;
+  color: var(--neutral-on-background-weak);
+  font-size: var(--static-font-size-14);
+}
+
+.signInWrap {
+  margin-bottom: var(--static-space-24);
+}

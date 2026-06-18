@@ -13,8 +13,12 @@ import {
 } from "@once-ui-system/core";
 import { baseURL, about, person, social } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
+import { Guestbook } from "@/components/guestbook/Guestbook";
 import styles from "@/components/about/about.module.scss";
+import { getGuestbookMessages } from "@/lib/guestbook/queries";
 import React from "react";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -26,7 +30,8 @@ export async function generateMetadata() {
   });
 }
 
-export default function About() {
+export default async function About() {
+  const guestbookMessages = await getGuestbookMessages();
   const structure = [
     {
       title: about.intro.title,
@@ -292,6 +297,8 @@ export default function About() {
               </Column>
             </>
           )}
+
+          <Guestbook initialMessages={guestbookMessages} />
         </Column>
       </Row>
     </Column>
