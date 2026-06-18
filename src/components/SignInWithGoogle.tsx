@@ -1,52 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Button, Flex, Text } from "@once-ui-system/core";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth/client";
+import {
+  signInWithGoogleAction,
+  type OAuthDestination,
+} from "@/app/auth/actions";
 
 type SignInWithGoogleProps = {
-  callbackURL?: string;
+  destination?: OAuthDestination;
   label?: string;
   size?: "s" | "m" | "l";
 };
 
 export function SignInWithGoogle({
-  callbackURL = "/",
+  destination = "home",
   label = "Sign in with Google",
   size = "m",
 }: SignInWithGoogleProps) {
   const { data: session, isPending } = authClient.useSession();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSigningIn, startSignIn] = useTransition();
+  const [isSigningOut, startSignOut] = useTransition();
 
-  const handleSignIn = async () => {
-    setLoading(true);
+  const handleSignIn = () => {
     setError(null);
-
-    try {
-      const absoluteCallback = new URL(callbackURL, window.location.origin).toString();
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: absoluteCallback,
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign-in failed");
-      setLoading(false);
-    }
+    startSignIn(async () => {
+      try {
+        await signInWithGoogleAction(destination);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Sign-in failed");
+      }
+    });
   };
 
-  const handleSignOut = async () => {
-    setLoading(true);
+  const handleSignOut = () => {
     setError(null);
-
-    try {
-      await authClient.signOut();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign-out failed");
-    } finally {
-      setLoading(false);
-    }
+    startSignOut(async () => {
+      try {
+        await authClient.signOut();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Sign-out failed");
+      }
+    });
   };
 
   if (isPending) {
@@ -57,8 +55,13 @@ export function SignInWithGoogle({
     return (
       <Flex gap="12" vertical="center" wrap>
         <Text variant="body-default-s">Signed in as {session.user.name}</Text>
-        <Button onClick={handleSignOut} disabled={loading} variant="secondary" size="s">
-          {loading ? "Signing out…" : "Sign out"}
+        <Button
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+          variant="secondary"
+          size="s"
+        >
+          {isSigningOut ? "Signing out…" : "Sign out"}
         </Button>
       </Flex>
     );
@@ -66,10 +69,15 @@ export function SignInWithGoogle({
 
   return (
     <div>
-      <Button onClick={handleSignIn} disabled={loading} size={size} variant="secondary">
+      <Button
+        onClick={handleSignIn}
+        disabled={isSigningIn}
+        size={size}
+        variant="secondary"
+      >
         <Flex gap="8" vertical="center">
           <FcGoogle size={18} />
-          {loading ? "Redirecting…" : label}
+          {isSigningIn ? "Redirecting…" : label}
         </Flex>
       </Button>
       {error ? (

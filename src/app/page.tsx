@@ -10,7 +10,7 @@ import {
   Meta,
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, newsletter } from "@/resources";
-import { Mailchimp } from "@/components";
+import { Mailchimp, SignInWithGoogle } from "@/components";
 import { Projects } from "@/components/work/Projects";
 
 export async function generateMetadata() {
@@ -79,7 +79,7 @@ export default function Home() {
           >
             {home.subline}
           </Text>
-          <Row paddingTop="12" horizontal="center" paddingLeft="12">
+          <Row paddingTop="12" horizontal="center" paddingLeft="12" gap="12">
             <Button
               id="about"
               data-border="rounded"
@@ -101,6 +101,7 @@ export default function Home() {
                 {about.title}
               </Row>
             </Button>
+            <SignInWithGoogle />
           </Row>
         </Column>
       </Column>

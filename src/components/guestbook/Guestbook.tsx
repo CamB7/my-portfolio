@@ -11,12 +11,28 @@ import styles from "./guestbook.module.scss";
 
 const MAX_BODY_LENGTH = 500;
 
-type GuestbookProps = {
-  initialMessages: GuestbookMessage[];
+function avatarProps(userImage: string | null | undefined, userName: string) {
+  const src = userImage?.trim();
+  if (src && (src.startsWith("https://") || src.startsWith("/"))) {
+    return { src };
+  }
+  return { value: userName.slice(0, 1) };
+}
+
+type GuestbookUser = {
+  id: string;
+  name: string;
+  image?: string | null;
 };
 
-export function Guestbook({ initialMessages }: GuestbookProps) {
+type GuestbookProps = {
+  initialMessages: GuestbookMessage[];
+  initialUser?: GuestbookUser | null;
+};
+
+export function Guestbook({ initialMessages, initialUser = null }: GuestbookProps) {
   const { data: session, isPending: sessionPending } = authClient.useSession();
+  const user = session?.user ?? initialUser;
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -30,7 +46,7 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
 
   function handlePost() {
     const trimmed = body.trim();
-    if (!session?.user || trimmed.length < 1 || trimmed.length > MAX_BODY_LENGTH) {
+    if (!user || trimmed.length < 1 || trimmed.length > MAX_BODY_LENGTH) {
       return;
     }
 
@@ -40,9 +56,9 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
       id: -Date.now(),
       body: trimmed,
       createdAt: new Date().toISOString(),
-      userId: session.user.id,
-      userName: session.user.name,
-      userImage: session.user.image ?? null,
+      userId: user.id,
+      userName: user.name,
+      userImage: user.image ?? null,
     };
 
     startTransition(() => {
@@ -67,13 +83,13 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
         Guestbook
       </Heading>
 
-      {sessionPending ? (
+      {sessionPending && !user ? (
         <Text variant="body-default-s" onBackground="neutral-weak">
           Loading…
         </Text>
-      ) : session?.user ? (
+      ) : user ? (
         <div className={styles.form}>
-          <p className={styles.postingAs}>posting as {session.user.name}</p>
+          <p className={styles.postingAs}>posting as {user.name}</p>
           <textarea
             className={styles.textarea}
             value={body}
@@ -100,7 +116,7 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
       ) : (
         <div className={styles.signInWrap}>
           <SignInWithGoogle
-            callbackURL="/about"
+            destination="about"
             label="Sign in with Google to leave a message"
             size="s"
           />
@@ -112,18 +128,14 @@ export function Guestbook({ initialMessages }: GuestbookProps) {
           <p className={styles.empty}>No messages yet. Be the first to say hello.</p>
         ) : (
           optimisticMessages.map((message) => {
-            const isOwn = session?.user?.id === message.userId;
+            const isOwn = user?.id === message.userId;
 
             return (
               <article
                 key={message.id}
                 className={`${styles.message} ${isOwn ? styles.messageOwn : ""}`}
               >
-                <Avatar
-                  src={message.userImage ?? undefined}
-                  size="m"
-                  value={message.userName.slice(0, 1)}
-                />
+                <Avatar size="m" {...avatarProps(message.userImage, message.userName)} />
                 <div className={styles.messageBody}>
                   <div className={styles.messageHeader}>
                     <span className={styles.messageName}>{message.userName}</span>

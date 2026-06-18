@@ -16,6 +16,7 @@ import TableOfContents from "@/components/about/TableOfContents";
 import { Guestbook } from "@/components/guestbook/Guestbook";
 import styles from "@/components/about/about.module.scss";
 import { getGuestbookMessages } from "@/lib/guestbook/queries";
+import { auth } from "@/lib/auth/server";
 import React from "react";
 
 export const dynamic = "force-dynamic";
@@ -31,7 +32,10 @@ export async function generateMetadata() {
 }
 
 export default async function About() {
-  const guestbookMessages = await getGuestbookMessages();
+  const [{ data: session }, guestbookMessages] = await Promise.all([
+    auth.getSession(),
+    getGuestbookMessages(),
+  ]);
   const structure = [
     {
       title: about.intro.title,
@@ -298,7 +302,10 @@ export default async function About() {
             </>
           )}
 
-          <Guestbook initialMessages={guestbookMessages} />
+          <Guestbook
+            initialMessages={guestbookMessages}
+            initialUser={session?.user ?? null}
+          />
         </Column>
       </Row>
     </Column>

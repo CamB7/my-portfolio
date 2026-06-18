@@ -68,14 +68,14 @@
   gap: var(--static-space-12);
   padding: var(--static-space-16);
   border-radius: var(--radius-m);
-  border: 1px solid var(--neutral-border-weak);
-  background: color-mix(in srgb, var(--page-background) 92%, var(--neutral-background-weak) 8%);
+  border: 1px solid var(--brand-border-medium);
+  background: color-mix(in srgb, var(--page-background) 90%, var(--brand-alpha-weak) 10%);
+  box-shadow: inset 3px 0 0 var(--brand-background-strong);
 }
 
 .messageOwn {
-  border-color: var(--brand-border-medium);
-  background: color-mix(in srgb, var(--page-background) 88%, var(--brand-alpha-weak) 12%);
-  box-shadow: inset 3px 0 0 var(--brand-background-strong);
+  border-color: var(--brand-border-strong);
+  background: color-mix(in srgb, var(--page-background) 85%, var(--brand-alpha-weak) 15%);
 }
 
 .messageBody {

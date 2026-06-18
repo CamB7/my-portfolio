@@ -18,6 +18,10 @@ export async function postGuestbookMessage(
     return { success: false, error: "You must be signed in to post a message." };
   }
 
+  if (!session.user.email) {
+    return { success: false, error: "Your account is missing an email address." };
+  }
+
   const trimmed = body.trim();
 
   if (trimmed.length < 1) {
@@ -30,6 +34,23 @@ export async function postGuestbookMessage(
       error: `Message must be ${MAX_BODY_LENGTH} characters or fewer.`,
     };
   }
+
+  await db
+    .insert(users)
+    .values({
+      id: session.user.id,
+      name: session.user.name,
+      email: session.user.email,
+      image: session.user.image ?? null,
+    })
+    .onConflictDoUpdate({
+      target: users.id,
+      set: {
+        name: session.user.name,
+        email: session.user.email,
+        image: session.user.image ?? null,
+      },
+    });
 
   const [inserted] = await db
     .insert(guestbookMessages)
